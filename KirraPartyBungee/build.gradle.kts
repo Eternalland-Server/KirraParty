@@ -7,13 +7,14 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.10"
 }
 
-group = "org.tabooproject.exampleproject.server"
+group = "net.sakuragame.eternal.kirraparty.bungee"
 version = projectVersion
 
 taboolib {
     install("common")
     install("common-5")
-    install("platform-bukkit")
+    install("module-chat")
+    install("platform-bungee")
     classifier = null
     version = libVersion
 }
@@ -30,6 +31,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly("net.sakuragame:DataManager-Bungee-API:1.2.0-SNAPSHOT@jar")
     compileOnly("net.md_5.bungee:BungeeCord:1@jar")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
