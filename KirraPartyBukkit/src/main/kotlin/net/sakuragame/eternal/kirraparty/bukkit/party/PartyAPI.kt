@@ -30,7 +30,7 @@ object PartyAPI {
      */
     fun createParty(leaderUUID: UUID, isSync: Boolean = false) {
         val partyUID = getRandomPartyUID()
-        parties += Party(isSync = isSync, partyUID, Atomics.newReference(), mutableListOf(), getCurrentTimes())
+        parties += Party(isSync = isSync, partyUID, Atomics.newReference(leaderUUID), mutableListOf(), getCurrentTimes())
         PartyCreateEvent(leaderUUID, partyUID).call()
     }
 

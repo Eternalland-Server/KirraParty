@@ -18,10 +18,10 @@ object PlaceholderAPI : PlaceholderExpansion {
 
     override val identifier = "KirraParty".lowercase()
 
-    override fun onPlaceholderRequest(player: Player?, arg: String): String {
+    override fun onPlaceholderRequest(player: Player?, args: String): String {
         if (player == null) return "__"
         val party = PartyAPI.getParty(player) ?: return "__"
-        return when (arg.lowercase()) {
+        return when (args.lowercase()) {
             "uid" -> party.uid
             "leader" -> ClientManagerAPI.getUserName(party.leaderUUID.get())!!
             "member_1" -> (if (party.memberUUIDs.size >= 1) ClientManagerAPI.getUserName(party.memberUUIDs[0]) else "无")!!

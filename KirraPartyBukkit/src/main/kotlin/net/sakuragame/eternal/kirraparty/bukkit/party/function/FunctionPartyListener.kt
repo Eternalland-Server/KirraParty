@@ -29,7 +29,7 @@ object FunctionPartyListener {
     /**
      * 跨服数据同步.
      */
-    @EventHandler
+    @SubscribeEvent
     fun e(e: PlayerJoinEvent) {
         val player = e.player
         // 玩家通过邀请进入服务器.

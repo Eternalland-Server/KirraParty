@@ -116,6 +116,11 @@ object DCoreParty {
         }
     }
 
+    fun openMainUI(player: Player) {
+        UIFactory.open(player, PartyScreen.mainUI)
+        updateDragonCoreVars(player)
+    }
+
     fun openKickNotifyBox(player: Player, compID: String): NotifyBox {
         return NotifyBox("$partyKickNotifyBoxKey;$compID", partyGuiTitle, listOf("", "是否踢出该玩家?", "")).apply {
             open(player, false)

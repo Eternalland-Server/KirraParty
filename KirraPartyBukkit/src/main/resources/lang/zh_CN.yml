@@ -23,3 +23,4 @@ message-player-succ-sent-invite-request: "&6&l➱ &e您成功向 &f{0}&e 发送�
 message-party-succ-kick: "&6&l➱ &e成功踢出这名玩家!"
 message-auto-joined-team: "&6&l➱ &f{0}&e 加入了队伍."
 message-disallow-create-party: "&4&l➱ &c本服务器不允许创建队伍!"
+message-player-cannot-invite-self: "&4&l➱ &c不能邀请自己!"

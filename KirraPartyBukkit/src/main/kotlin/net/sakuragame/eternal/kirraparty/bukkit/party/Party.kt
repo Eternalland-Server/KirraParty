@@ -35,6 +35,7 @@ data class Party(
     }
 
     fun sendInviteRequest(sender: Player, name: String): Boolean {
+        if (name.isEmpty()) return false
         val invitedPlayerUUID = ClientManagerAPI.getUserUUID(name) ?: return false
         PartyAPI.getWholeDataFromRedis().forEach {
             if (it.memberUUIDs.contains(invitedPlayerUUID)) {

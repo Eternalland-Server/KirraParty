@@ -3,13 +3,13 @@ package net.sakuragame.eternal.kirraparty.bukkit.function
 import net.sakuragame.eternal.kirraparty.bukkit.compat.dragoncore.DCoreParty
 import net.sakuragame.eternal.kirraparty.bukkit.party.PartyAPI
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityRegainHealthEvent
+import taboolib.common.platform.event.SubscribeEvent
 
 object FunctionListener {
 
-    @EventHandler
+    @SubscribeEvent
     fun e(e: EntityRegainHealthEvent) {
         val player = e.entity as? Player ?: return
         if (!PartyAPI.hasParty(player)) {
@@ -18,7 +18,7 @@ object FunctionListener {
         DCoreParty.updateDragonCoreVars(player)
     }
 
-    @EventHandler
+    @SubscribeEvent
     fun e(e: EntityDamageEvent) {
         val player = e.entity as? Player ?: return
         if (!PartyAPI.hasParty(player)) {
