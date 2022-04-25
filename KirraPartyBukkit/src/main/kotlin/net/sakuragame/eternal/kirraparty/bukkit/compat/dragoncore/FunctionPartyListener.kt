@@ -88,7 +88,11 @@ object FunctionPartyListener {
     @SubscribeEvent
     fun e(e: YamlSendToPlayerEvent) {
         val player = e.player
-        PacketSender.sendYaml(player, FolderType.Gui, leftStatusHud.id, leftStatusHud.build(player))
+        submit(async = true, delay = 10L) {
+            if (PartyAPI.hasParty(player)) {
+                PacketSender.sendYaml(player, FolderType.Gui, leftStatusHud.id, leftStatusHud.build(player))
+            }
+        }
     }
 
     @SubscribeEvent

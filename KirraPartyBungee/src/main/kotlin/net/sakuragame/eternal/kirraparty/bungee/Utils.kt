@@ -7,7 +7,7 @@ import java.util.*
 
 val GSON = Gson()
 
-fun printToConsole(message: String) = KirraPartyBungee.plugin.logger.fine(message)
+fun printToConsole(message: String) = KirraPartyBungee.plugin.logger.info(message)
 
 fun List<String>.parseSingle() = GSON.toJson(this)!!
 

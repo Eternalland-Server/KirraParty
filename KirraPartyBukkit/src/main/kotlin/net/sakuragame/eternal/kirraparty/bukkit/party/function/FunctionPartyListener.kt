@@ -2,7 +2,6 @@ package net.sakuragame.eternal.kirraparty.bukkit.party.function
 
 import net.sakuragame.eternal.kirraparty.bukkit.KirraPartyBukkit
 import net.sakuragame.eternal.kirraparty.bukkit.party.PartyAPI
-import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -33,7 +32,7 @@ object FunctionPartyListener {
     fun e(e: PlayerJoinEvent) {
         val player = e.player
         // 玩家通过邀请进入服务器.
-        val inviteUID = KirraPartyBukkit.redisConn.sync().hget("inviteRequests", player.uniqueId.toString())
+        val inviteUID = KirraPartyBukkit.redisConn.sync().hget("inviteRequests", player.uniqueId.toString()) ?: return
         val localParty = PartyAPI.getPartyByStringUID(inviteUID)
         if (localParty != null) {
             KirraPartyBukkit.redisConn.async().hdel("inviteRequests", player.uniqueId.toString())

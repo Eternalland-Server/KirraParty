@@ -11,6 +11,11 @@ group = "net.sakuragame.eternal.kirraparty.bungee"
 version = projectVersion
 
 taboolib {
+    description {
+        dependencies {
+            name("DataManager")
+        }
+    }
     install("common")
     install("common-5")
     install("module-chat")

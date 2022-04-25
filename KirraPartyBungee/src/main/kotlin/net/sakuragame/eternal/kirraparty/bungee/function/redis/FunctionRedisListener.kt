@@ -5,6 +5,7 @@ import net.sakuragame.eternal.kirraparty.bungee.parseUUID
 import net.sakuragame.serversystems.manage.api.redis.RedisMessageListener
 import java.util.*
 
+@Suppress("SpellCheckingInspection")
 object FunctionRedisListener : RedisMessageListener(true, "KirraParty"){
 
     override fun onMessage(serviceName: String, sourceServer: String, channel: String, messages: Array<String>) {
