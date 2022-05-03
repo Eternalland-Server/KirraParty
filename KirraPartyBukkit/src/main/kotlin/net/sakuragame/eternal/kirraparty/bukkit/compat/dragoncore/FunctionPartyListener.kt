@@ -11,6 +11,7 @@ import net.sakuragame.eternal.justmessage.api.event.input.InputBoxCancelEvent
 import net.sakuragame.eternal.justmessage.api.event.input.InputBoxConfirmEvent
 import net.sakuragame.eternal.justmessage.api.event.notify.NotifyBoxCancelEvent
 import net.sakuragame.eternal.justmessage.api.event.notify.NotifyBoxConfirmEvent
+import net.sakuragame.eternal.kirraparty.bukkit.KirraPartyBukkit
 import net.sakuragame.eternal.kirraparty.bukkit.compat.dragoncore.DCoreParty.baffle
 import net.sakuragame.eternal.kirraparty.bukkit.compat.dragoncore.DCoreParty.buttonSound
 import net.sakuragame.eternal.kirraparty.bukkit.compat.dragoncore.DCoreParty.cancelSound
@@ -55,10 +56,10 @@ object FunctionPartyListener {
         val player = e.player
         if (!baffle.hasNext(player.name)) return
         baffle.next(player.name)
-//        if (!KirraPartyBukkit.conf.getBoolean("allowed-create-party")) {
-//            MessageAPI.sendActionTip(player, player.asLangText("message-disallow-create-party"))
-//            return
-//        }
+        if (!KirraPartyBukkit.conf.getBoolean("allowed-create-party")) {
+            MessageAPI.sendActionTip(player, player.asLangText("message-disallow-create-party"))
+            return
+        }
         if (PartyAPI.hasParty(player)) {
             DCoreParty.open(player)
             return
