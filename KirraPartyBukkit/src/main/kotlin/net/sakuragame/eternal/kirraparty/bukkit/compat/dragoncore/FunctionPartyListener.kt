@@ -54,7 +54,9 @@ object FunctionPartyListener {
     fun e(e: KeyPressEvent) {
         if (e.key != DCoreParty.triggerKey) return
         val player = e.player
-        if (!baffle.hasNext(player.name)) return
+        if (!baffle.hasNext(player.name)) {
+            return
+        }
         baffle.next(player.name)
         if (!KirraPartyBukkit.conf.getBoolean("allowed-create-party")) {
             MessageAPI.sendActionTip(player, player.asLangText("message-disallow-create-party"))
