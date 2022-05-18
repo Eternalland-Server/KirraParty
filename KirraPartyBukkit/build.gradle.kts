@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.sakuragame.eternal:KirraCore-Bukkit:1.2.3-SNAPSHOT@jar")
+    compileOnly("net.sakuragame.eternal:KirraCore-Bukkit:1.2.4-SNAPSHOT@jar")
     compileOnly("net.sakuragame.eternal:JustMessage:1.0.2-SNAPSHOT@jar")
     compileOnly("net.sakuragame:DataManager-Bukkit-API:1.3.2-SNAPSHOT@jar")
     compileOnly("com.taylorswiftcn:UIFactory:1.0.0-SNAPSHOT@jar")

@@ -1,5 +1,6 @@
 package net.sakuragame.eternal.kirraparty.bukkit.party
 
+import net.sakuragame.eternal.kirracore.bukkit.util.Lang
 import net.sakuragame.eternal.kirraparty.bukkit.KirraPartyBukkit
 import net.sakuragame.eternal.kirraparty.bukkit.event.PartyAddMemberEvent
 import net.sakuragame.eternal.kirraparty.bukkit.event.PartyChangeLeaderEvent
@@ -8,7 +9,6 @@ import net.sakuragame.eternal.kirraparty.bukkit.event.PartyKickMemberEvent
 import net.sakuragame.eternal.kirraparty.bukkit.event.compat.PartyInvitePlayerEvent
 import net.sakuragame.eternal.kirraparty.bukkit.event.compat.PartyMemberTransferEvent
 import net.sakuragame.eternal.kirraparty.bukkit.getRandomPartyUID
-import net.sakuragame.kirracore.bukkit.util.Lang
 import net.sakuragame.serversystems.manage.client.api.ClientManagerAPI
 import org.bukkit.Bukkit
 import org.bukkit.Bukkit.getConsoleSender
