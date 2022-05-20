@@ -7,6 +7,17 @@ import taboolib.common.platform.event.SubscribeEvent
 
 object FunctionListener {
 
+    fun onClose() {
+        KirraPartyBungee.redisConn.sync().hgetall("savedParty").keys.forEach {
+            KirraPartyBungee.redisConn.sync().hdel("savedParty", it)
+            printToConsole("已删除遗留数据: $it (savedParty)")
+        }
+        KirraPartyBungee.redisConn.sync().hgetall("inviteRequests").keys.forEach {
+            KirraPartyBungee.redisConn.sync().hdel("inviteRequests", it)
+            printToConsole("已删除遗留数据: $it (inviteRequests)")
+        }
+    }
+
     @SubscribeEvent
     fun e(e: PlayerDisconnectEvent) {
         val player = e.player

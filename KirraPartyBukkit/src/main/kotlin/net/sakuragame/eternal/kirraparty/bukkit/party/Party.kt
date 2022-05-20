@@ -17,12 +17,11 @@ import taboolib.common.platform.function.submit
 import taboolib.module.chat.colored
 import taboolib.platform.util.asLangText
 import java.util.*
-import java.util.concurrent.atomic.AtomicReference
 
 data class Party(
     val isSync: Boolean = false,
     val uid: String = getRandomPartyUID(),
-    val leaderUUID: AtomicReference<UUID>,
+    var leaderUUID: UUID,
     val memberUUIDs: MutableList<UUID>,
     val createdTime: Long,
 ) {
@@ -43,18 +42,18 @@ data class Party(
                 return false
             }
         }
-        PartyInvitePlayerEvent(invitedPlayerUUID.toString(), sender.asLangText("message-invite-by-player", sender.name))
+        PartyInvitePlayerEvent(invitedPlayerUUID.toString(), sender.asLangText("message-invite-by-player", sender.name)).call()
         KirraPartyBukkit.redisConn.async().hset("inviteRequests", invitedPlayerUUID.toString(), uid)
         return true
     }
 
     fun getPosition(uuid: UUID): PartyPosition {
-        if (leaderUUID.get() == uuid) return PartyPosition.LEADER
+        if (leaderUUID == uuid) return PartyPosition.LEADER
         return PartyPosition.MEMBER
     }
 
     fun getWholeMembers() = mutableListOf<UUID>().apply {
-        add(leaderUUID.get())
+        add(leaderUUID)
         addAll(memberUUIDs)
     }
 
@@ -80,12 +79,12 @@ data class Party(
 
     fun changeLeader(newLeaderUUID: UUID) {
         val playerName = ClientManagerAPI.getUserName(newLeaderUUID) ?: return
-        val oldLeaderUUID = leaderUUID.get()
+        val oldLeaderUUID = leaderUUID
 
         PartyChangeLeaderEvent(uid, oldLeaderUUID, newLeaderUUID).call()
         sendMessage(getConsoleSender().asLangText("message-leader-has-changed", playerName))
 
-        leaderUUID.set(newLeaderUUID)
+        leaderUUID = newLeaderUUID
 
         removeMember(newLeaderUUID)
         addMember(oldLeaderUUID)
@@ -103,7 +102,7 @@ data class Party(
             return
         }
         submit(delay = 5L) {
-            PartyMemberTransferEvent(leaderUUID.get(), memberUUIDs).call()
+            PartyMemberTransferEvent(leaderUUID, memberUUIDs).call()
         }
     }
 

@@ -63,7 +63,7 @@ object DCoreParty {
                     it["kparty_latest_message"] = ""
 
                     val leaderUUID = party.leaderUUID.toString()
-                    val leaderPlayer = party.leaderUUID.get().forceParsePlayer()
+                    val leaderPlayer = party.leaderUUID.forceParsePlayer()
                     it["kparty_model_leader"] = leaderUUID
                     it["kparty_name_leader"] = leaderPlayer.name
 

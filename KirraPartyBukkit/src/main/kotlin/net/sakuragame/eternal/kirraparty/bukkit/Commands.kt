@@ -18,10 +18,17 @@ object Commands {
     val main = mainCommand {
         createHelper()
     }
+    
+    @CommandBody(permissionDefault = PermissionDefault.TRUE)
+    val test = subCommand {
+        execute<CommandSender> { sender, _, argument ->
+            sender.sendMessage("Yikes")
+        }
+    }
 
     @CommandBody
     val list = subCommand {
-        dynamic(commit = "查看类型") {
+        dynamic(commit = "type") {
             execute<CommandSender> { sender, _, argument ->
                 when (argument.lowercase()) {
                     "local" -> sender.sendPartyInfoMessage(true)
@@ -44,6 +51,14 @@ object Commands {
         }
     }
 
+    @CommandBody
+    val reload = subCommand {
+        execute<CommandSender> { sender, _, _ ->
+            KirraPartyBukkit.reload()
+            sender.sendMessage("&c[System] &7Success".colored())
+        }
+    }
+
     private fun CommandSender.sendPartyInfoMessage(all: Boolean) {
         when (all) {
             false -> sendPartyInfoMessage(this, parties = PartyAPI.parties)
@@ -53,17 +68,17 @@ object Commands {
 
     private fun sendPartyInfoMessage(sender: CommandSender, parties: List<Party>) {
         parties.forEach {
-            val leaderInfo = getInfo(it, sender, it.leaderUUID.get()) ?: return@forEach
-            sender.sendMessage("&c[System] &7${leaderInfo.username} 的队伍 (编号: ${it.uid})")
-            sender.sendMessage("&c[System] &7创建时间: ${it.createdTime.parseFormattedString()}")
+            val leaderInfo = getInfo(it, sender, it.leaderUUID) ?: return@forEach
+            sender.sendMessage("&c[System] &7${leaderInfo.username} 的队伍 (编号: ${it.uid})".colored())
+            sender.sendMessage("&c[System] &7创建时间: ${it.createdTime.parseFormattedString()}".colored())
             if (it.memberUUIDs.isEmpty()) {
-                sender.sendMessage("&c[System] &7该队伍没有成员.".colored())
+                sender.sendMessage("         &7该队伍没有成员.".colored())
                 return@forEach
             }
-            sender.sendMessage("&c[System] &7队伍成员: ".colored())
+            sender.sendMessage("         &7队伍成员: ".colored())
             it.memberUUIDs.forEach memberForeach@{ memberUUID ->
                 val memberInfo = getInfo(it, sender, memberUUID) ?: return@memberForeach
-                sender.sendMessage("&c[System] &7- ${memberInfo.username}".colored())
+                sender.sendMessage("          &7- ${memberInfo.username}".colored())
             }
         }
     }

@@ -1,13 +1,11 @@
 package net.sakuragame.eternal.kirraparty.bukkit.party
 
-import com.google.common.util.concurrent.Atomics
 import net.sakuragame.eternal.kirraparty.bukkit.KirraPartyBukkit
 import net.sakuragame.eternal.kirraparty.bukkit.event.PartyCreateEvent
 import net.sakuragame.eternal.kirraparty.bukkit.getCurrentTimes
 import net.sakuragame.eternal.kirraparty.bukkit.getRandomPartyUID
 import org.bukkit.entity.Player
 import java.util.*
-import java.util.concurrent.atomic.AtomicReference
 
 @Suppress("MemberVisibilityCanBePrivate")
 object PartyAPI {
@@ -30,7 +28,7 @@ object PartyAPI {
      */
     fun createParty(leaderUUID: UUID, isSync: Boolean = false) {
         val partyUID = getRandomPartyUID()
-        parties += Party(isSync = isSync, partyUID, Atomics.newReference(leaderUUID), mutableListOf(), getCurrentTimes())
+        parties += Party(isSync = isSync, partyUID, leaderUUID, mutableListOf(), getCurrentTimes())
         PartyCreateEvent(leaderUUID, partyUID).call()
     }
 
@@ -58,7 +56,7 @@ object PartyAPI {
         }
         val createTime = KirraPartyBukkit.redisConn.sync().get("createdTime:$uid").toLongOrNull() ?: return null
         val memberUUIDs = KirraPartyBukkit.redisConn.sync().lrange("memberOf:$uid", 0, -1).map { UUID.fromString(it) } as ArrayList<UUID>
-        return Party(true, uid, AtomicReference(leaderUUID), memberUUIDs, createTime).also {
+        return Party(true, uid, leaderUUID, memberUUIDs, createTime).also {
             if (doSummon) {
                 it.doSummon()
             }
@@ -71,13 +69,19 @@ object PartyAPI {
     fun getWholeDataFromRedis(): List<Party> {
         return mutableListOf<Party>().also { partyList ->
             KirraPartyBukkit.redisConn.sync().hgetall("savedParty").forEach { (index, value) ->
-                val leaderUUID = Atomics.newReference<UUID>().also {
-                    it.set(UUID.fromString(index))
+                if (index.isNullOrEmpty()) {
+                    doRecycle(index)
+                    return@forEach
                 }
+                val leaderUUID = UUID.fromString(index)
                 val createdTime = KirraPartyBukkit.redisConn.sync().get("createdTime:$value").toLong()
-                val memberUUIDList = KirraPartyBukkit.redisConn.sync().lrange("memberOf:$value", 0, -1).map { UUID.fromString(it) } as ArrayList<UUID>
+                val memberUUIDList = KirraPartyBukkit.redisConn.sync().lrange("memberOf:$value", 0, -1).map { UUID.fromString(it) }.toMutableList()
                 partyList += Party(true, value, leaderUUID, memberUUIDList, createdTime)
             }
         }
+    }
+
+    private fun doRecycle(index: String) {
+        KirraPartyBukkit.redisConn.sync().hdel("savedParty", index)
     }
 }
