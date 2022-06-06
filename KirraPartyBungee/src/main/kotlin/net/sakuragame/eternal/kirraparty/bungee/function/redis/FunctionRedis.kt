@@ -28,9 +28,10 @@ object FunctionRedis {
         val message = TextComponent(rawMessage).also {
             it.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, arrayOf(TextComponent("&7点击加入该队伍.")))
             it.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, "/kParty acceptInvite")
+
         }
         player.sendMessage(message)
     }
 
-    private fun getParty(leaderUUID: UUID) = KirraPartyBungee.redisConn.sync().hget("savedParty", leaderUUID.toString()) ?: ""
+    private fun getParty(leaderUUID: UUID) = KirraPartyBungee.redisConn.hget("savedParty", leaderUUID.toString()) ?: ""
 }

@@ -28,8 +28,8 @@ data class Party(
 
     init {
         if (!isSync) {
-            KirraPartyBukkit.redisConn.async().hset("savedParty", leaderUUID.toString(), uid)
-            KirraPartyBukkit.redisConn.async().set("createdTime:$uid", createdTime.toString())
+            KirraPartyBukkit.redisConn.hset("savedParty", leaderUUID.toString(), uid)
+            KirraPartyBukkit.redisConn.set("createdTime:$uid", createdTime.toString())
         }
     }
 
@@ -43,7 +43,7 @@ data class Party(
             }
         }
         PartyInvitePlayerEvent(invitedPlayerUUID.toString(), sender.asLangText("message-invite-by-player", sender.name)).call()
-        KirraPartyBukkit.redisConn.async().hset("inviteRequests", invitedPlayerUUID.toString(), uid)
+        KirraPartyBukkit.redisConn.hset("inviteRequests", invitedPlayerUUID.toString(), uid)
         return true
     }
 
@@ -63,7 +63,7 @@ data class Party(
 
         memberUUIDs += playerUUID
 
-        KirraPartyBukkit.redisConn.async().lpush("memberOf:$uid", playerUUID.toString())
+        KirraPartyBukkit.redisConn.lpush("memberOf:$uid", playerUUID.toString())
         PartyAddMemberEvent(uid, playerUUID).call()
     }
 
@@ -73,7 +73,7 @@ data class Party(
 
         memberUUIDs -= playerUUID
 
-        KirraPartyBukkit.redisConn.async().lrem("memberOf:$uid", 1, playerUUID.toString())
+        KirraPartyBukkit.redisConn.lrem("memberOf:$uid", 1, playerUUID.toString())
         PartyKickMemberEvent(uid, playerUUID).call()
     }
 
@@ -89,7 +89,7 @@ data class Party(
         removeMember(newLeaderUUID)
         addMember(oldLeaderUUID)
 
-        KirraPartyBukkit.redisConn.async().hset("savedParty", newLeaderUUID.toString(), uid)
+        KirraPartyBukkit.redisConn.hset("savedParty", newLeaderUUID.toString(), uid)
     }
 
     fun getMemberByOrder(order: Int): UUID? {
@@ -116,9 +116,9 @@ data class Party(
     fun disband() {
         PartyDisbandEvent(uid).call()
         removeLocal()
-        KirraPartyBukkit.redisConn.async().hdel("savedParty", leaderUUID.toString())
-        KirraPartyBukkit.redisConn.async().del("createdTime:$uid")
-        KirraPartyBukkit.redisConn.async().del("memberOf:$uid")
+        KirraPartyBukkit.redisConn.hdel("savedParty", leaderUUID.toString())
+        KirraPartyBukkit.redisConn.del("createdTime:$uid")
+        KirraPartyBukkit.redisConn.del("memberOf:$uid")
     }
 
     fun removeLocal() = PartyAPI.parties.remove(this)

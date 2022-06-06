@@ -21,7 +21,8 @@ fun UUID.getPlayerInfo() = ClientManagerAPI.getUserInfo(this)
 
 fun getCurrentTimes() = System.currentTimeMillis()
 
-fun getExistsUID() = redisConn.sync().hgetall("savedParty").values.map { it.toInt() }
+fun getExistsUID() = redisConn.hgetall("savedParty").values.map { it.toInt() }
+
 
 fun getRandomPartyUID(): String {
     val existsUID = getExistsUID()

@@ -1,16 +1,9 @@
 command-player-not-have-invite-quest: "&6&l➱ &e抱歉, 但并没有玩家邀请您加入他的队伍."
-command-party-list-info:
-  - "&6&l➱ &e{0} 的队伍 &7(UID: {1}), &e创建时间: {2}"
-  - "&6&l➱ &e队伍成员: {3}"
-command-type-not-selected:
-  - "&4&l➱ &c类型错误!"
-  - "&6&l➱ &eLOCAL &7(只获取本服的组队数据) / &eALL &7(获取所有服的队伍数据)."
-command-party-list-is-empty: "&4&l➱ &c当前没有任何队伍存在."
-command-player-already-in-a-party: "&4&l➱ &c您已经在一个队伍中了!"
 message-auto-kicked-member: "&6&l➱ &e{0} 因断线, 被自动踢出队伍."
 message-leader-has-changed: "&6&l➱ &e该队伍的队长已变更为 &f{0}"
-message-player-accept-failed: "&4&l➱ &c系统错误, 您的同意失败. 若频繁出现该状况请联系管理员"
+message-player-accept-failed: "&4&l➱ &c系统错误, 您的同意失败, 若频繁出现该状况请联系管理员 &7(NOT_FOUND_PARTY)"
 message-invite-by-player: "&6&l➱ &e{0} &e邀请您加入他的队伍!, 点击 &6&l这里 &e以同意."
+message-invite-summon-trigger: "&6&l➱ &e检测到你们并不在一个服务器, 正在进行传送..."
 message-player-already-in-party: "&6&l➱ &e该玩家已经在一个队伍里了!"
 message-player-not-in-party: "&4&l➱ &c您不在一个队伍里!"
 message-player-succ-create-party: "&6&l➱ &e您成功创建了一个队伍!"

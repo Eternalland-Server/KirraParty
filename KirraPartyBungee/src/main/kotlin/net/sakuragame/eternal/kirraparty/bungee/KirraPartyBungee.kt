@@ -1,5 +1,6 @@
 package net.sakuragame.eternal.kirraparty.bungee
 
+import com.lambdaworks.redis.api.sync.RedisCommands
 import net.sakuragame.eternal.kirraparty.bungee.function.FunctionListener
 import net.sakuragame.eternal.kirraparty.bungee.function.redis.FunctionRedisListener
 import net.sakuragame.serversystems.manage.proxy.api.ProxyManagerAPI
@@ -13,9 +14,8 @@ object KirraPartyBungee : Plugin() {
         ProxyManagerAPI.getRedisManager()!!
     }
 
-    val redisConn by lazy {
-        redisManager.standaloneConn!!
-    }
+    val redisConn: RedisCommands<String, String>
+        get() = redisManager.pooledConn!!
 
     val plugin by lazy {
         BungeePlugin.getInstance()

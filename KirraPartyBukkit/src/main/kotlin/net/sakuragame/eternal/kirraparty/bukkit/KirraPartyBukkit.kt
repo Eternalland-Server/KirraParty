@@ -1,11 +1,11 @@
 package net.sakuragame.eternal.kirraparty.bukkit
 
+import com.lambdaworks.redis.api.sync.RedisCommands
 import net.sakuragame.serversystems.manage.client.api.ClientManagerAPI
 import taboolib.common.platform.Plugin
 import taboolib.module.configuration.Configuration
 import taboolib.platform.BukkitPlugin
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 @Suppress("SpellCheckingInspection")
 object KirraPartyBukkit : Plugin() {
@@ -18,14 +18,11 @@ object KirraPartyBukkit : Plugin() {
     }
 
     val redisManager by lazy {
-        ClientManagerAPI.clientPlugin.redisManager!!
+        ClientManagerAPI.getRedisManager()!!
     }
 
-    val redisConn by lazy {
-        redisManager.standaloneConn.also {
-            it.setTimeout(200, TimeUnit.MILLISECONDS)
-        }!!
-    }
+    val redisConn: RedisCommands<String, String>
+        get() = redisManager.pooledConn!!
 
     override fun onEnable() {
         reload()

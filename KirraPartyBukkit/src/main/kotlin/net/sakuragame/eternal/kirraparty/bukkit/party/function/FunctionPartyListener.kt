@@ -10,7 +10,7 @@ import taboolib.common.platform.event.SubscribeEvent
 object FunctionPartyListener {
 
     /**
-     * 数据回收.
+     * 数据回收
      */
     @SubscribeEvent
     fun e(e: PlayerQuitEvent) {
@@ -18,7 +18,7 @@ object FunctionPartyListener {
     }
 
     /**
-     * 数据回收.
+     * 数据回收
      */
     @SubscribeEvent
     fun e(e: PlayerKickEvent) {
@@ -26,20 +26,20 @@ object FunctionPartyListener {
     }
 
     /**
-     * 跨服数据同步.
+     * 跨服数据同步
      */
     @SubscribeEvent
     fun e(e: PlayerJoinEvent) {
         val player = e.player
-        // 玩家通过邀请进入服务器.
-        val inviteUID = KirraPartyBukkit.redisConn.sync().hget("inviteRequests", player.uniqueId.toString()) ?: return
+        // 玩家通过邀请进入服务器
+        val inviteUID = KirraPartyBukkit.redisConn.hget("inviteRequests", player.uniqueId.toString()) ?: return
         val localParty = PartyAPI.getPartyByStringUID(inviteUID)
         if (localParty != null) {
-            KirraPartyBukkit.redisConn.async().hdel("inviteRequests", player.uniqueId.toString())
+            KirraPartyBukkit.redisConn.hdel("inviteRequests", player.uniqueId.toString())
             localParty.addMember(player.uniqueId)
             return
         }
-        val uid = KirraPartyBukkit.redisConn.sync().hget("savedParty", player.uniqueId.toString())
+        val uid = KirraPartyBukkit.redisConn.hget("savedParty", player.uniqueId.toString())
         if (uid.isNullOrEmpty()) return
         PartyAPI.parties += PartyAPI.getDataFromRedis(player.uniqueId, uid, true) ?: return
     }

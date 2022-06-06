@@ -5,10 +5,13 @@ import net.sakuragame.eternal.kirraparty.bukkit.party.PartyAPI
 import net.sakuragame.serversystems.manage.api.user.UserInfo
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import taboolib.common.platform.command.*
+import taboolib.common.platform.command.CommandBody
+import taboolib.common.platform.command.CommandHeader
+import taboolib.common.platform.command.mainCommand
+import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
-import java.util.UUID
+import java.util.*
 
 @Suppress("SpellCheckingInspection")
 @CommandHeader(name = "KirraParty", aliases = ["kparty"])
@@ -17,13 +20,6 @@ object Commands {
     @CommandBody
     val main = mainCommand {
         createHelper()
-    }
-    
-    @CommandBody(permissionDefault = PermissionDefault.TRUE)
-    val test = subCommand {
-        execute<CommandSender> { sender, _, argument ->
-            sender.sendMessage("Yikes")
-        }
     }
 
     @CommandBody
