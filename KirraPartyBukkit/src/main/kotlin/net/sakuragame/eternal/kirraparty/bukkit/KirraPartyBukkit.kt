@@ -1,6 +1,5 @@
 package net.sakuragame.eternal.kirraparty.bukkit
 
-import com.lambdaworks.redis.api.sync.RedisCommands
 import net.sakuragame.serversystems.manage.client.api.ClientManagerAPI
 import taboolib.common.platform.Plugin
 import taboolib.module.configuration.Configuration
@@ -21,8 +20,9 @@ object KirraPartyBukkit : Plugin() {
         ClientManagerAPI.getRedisManager()!!
     }
 
-    val redisConn: RedisCommands<String, String>
-        get() = redisManager.pooledConn!!
+    val redisConn by lazy {
+        redisManager.pooledConn!!
+    }
 
     override fun onEnable() {
         reload()
